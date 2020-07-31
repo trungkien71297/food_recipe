@@ -1,4 +1,4 @@
-import 'package:jokes/domain/models/food_recipe.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
 
 abstract class MyRecipesRepository {
   Future<List<FoodRecipe>> getMyFavoriteRecipes();

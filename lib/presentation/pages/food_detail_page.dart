@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/common.dart';
-import 'package:jokes/presentation/models/food_recipe_view.dart';
+import 'package:food_recipe/presentation/common.dart';
+import 'package:food_recipe/presentation/models/food_recipe_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -31,10 +31,16 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
     }
   }
 
-  List<Widget> _ingredients(){
+  List<Widget> _ingredients() {
     List<Widget> list = [];
     food.recipe.forEach((key, value) {
-      list.add(ListTile(title: Text(key, style: TextStyle(fontWeight: FontWeight.bold),), subtitle: Text(value),));
+      list.add(ListTile(
+        title: Text(
+          key,
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(value),
+      ));
     });
     return list;
   }
@@ -229,7 +235,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                             onEnded: (metaData) => print(metaData.toString()),
                           ),
                         ))),
-
                   ],
                 ),
                 ..._ingredients()

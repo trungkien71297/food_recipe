@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/widgets/main_pages/account.dart';
-import 'package:jokes/presentation/widgets/main_pages/categories.dart';
-import 'package:jokes/presentation/widgets/main_pages/home.dart';
-import 'package:jokes/presentation/widgets/main_pages/setting.dart';
+import 'package:food_recipe/presentation/blocs/food_recipe_bloc.dart';
+import 'package:food_recipe/presentation/widgets/main_pages/account.dart';
+import 'package:food_recipe/presentation/widgets/main_pages/categories.dart';
+import 'package:food_recipe/presentation/widgets/main_pages/home.dart';
+import 'package:food_recipe/presentation/widgets/main_pages/setting.dart';
+import 'package:provider/provider.dart';
+import '../../di/di.dart';
 
 class MainPage extends StatefulWidget {
   static const ROUTE_NAME = "MainPage";
@@ -44,32 +47,37 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("Food recipe"),
-      ),
-      body: PageView.builder(
-        controller: _controller,
-        itemCount: _pages.length,
-        itemBuilder: (context, index) => _pages[index],
-        onPageChanged: (value) {
-          setState(() {
-            _index = value;
-          });
-        },
-      ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context)
-            .copyWith(canvasColor: Colors.grey.withOpacity(0.5)),
-        child: BottomNavigationBar(
-          items: _bottomBar,
-          currentIndex: this._index,
-          onTap: (index) => _changePage(index),
-          unselectedItemColor: Colors.lightBlue,
-          selectedItemColor: Colors.green,
-          showUnselectedLabels: true,
+    var bloc = getIt<FoodRecipeBloc>();
+    return Provider(
+      create: (context) => bloc,
+      dispose: (context, value) => bloc.dispose(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Food recipe"),
+        ),
+        body: PageView.builder(
+          controller: _controller,
+          itemCount: _pages.length,
+          itemBuilder: (context, index) => _pages[index],
+          onPageChanged: (value) {
+            setState(() {
+              _index = value;
+            });
+          },
+        ),
+        bottomNavigationBar: Theme(
+          data: Theme.of(context)
+              .copyWith(canvasColor: Colors.grey.withOpacity(0.5)),
+          child: BottomNavigationBar(
+            items: _bottomBar,
+            currentIndex: this._index,
+            onTap: (index) => _changePage(index),
+            unselectedItemColor: Colors.lightBlue,
+            selectedItemColor: Colors.green,
+            showUnselectedLabels: true,
+          ),
         ),
       ),
     );

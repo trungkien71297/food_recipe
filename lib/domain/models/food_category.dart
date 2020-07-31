@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 class FoodCategory extends Equatable {
-  final int id;
+  final String id;
   final String name;
   final String thumb;
   final String description;

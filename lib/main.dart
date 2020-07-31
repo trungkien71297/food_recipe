@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/pages/category_detail_page.dart';
-import 'package:jokes/presentation/pages/food_detail_page.dart';
-import 'package:jokes/presentation/pages/main_page.dart';
+import 'package:food_recipe/presentation/pages/category_detail_page.dart';
+import 'package:food_recipe/presentation/pages/food_detail_page.dart';
+import 'package:food_recipe/presentation/pages/main_page.dart';
+import 'di/di.dart' as di;
 
 void main() {
+  di.init();
   runApp(JokeApp());
 }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/common.dart';
-import 'package:jokes/presentation/widgets/list_foods.dart';
+import 'package:food_recipe/domain/models/food_category.dart';
+import 'package:food_recipe/presentation/common.dart';
+import 'package:food_recipe/presentation/widgets/list_foods.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   static const ROUTE_NAME = "CategoryDetailPage";
@@ -11,7 +12,8 @@ class CategoryDetailPage extends StatefulWidget {
 
 class _CategoryDetailPageState extends State<CategoryDetailPage> {
   ScrollController _scrollController;
-  bool _collapse = false;
+  FoodCategory category;
+  bool _collapse = true;
   @override
   void didChangeDependencies() {
     var initOffset = MediaQuery.of(context).size.height / 3;
@@ -30,12 +32,15 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    category = args['category'];
     return Scaffold(
       body: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (ctx, innerBoxIsScrolled) {
           return [
             SliverAppBar(
+              backgroundColor: Colors.black,
               pinned: true,
               floating: false,
               snap: false,
@@ -43,7 +48,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
               centerTitle: true,
               title: Center(
                 child: Text(
-                  "Eccles Cakes",
+                  category.name,
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
@@ -63,7 +68,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
                       child: Hero(
                     tag: "asc", //foodRecipe.thumb,
                     child: Image.network(
-                      "https://www.themealdb.com/images/media/meals/wtqrqw1511639627.jpg",
+                      category.thumb,
                       fit: BoxFit.cover,
                     ),
                   )),
@@ -83,13 +88,20 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
             children: [
               ExpansionPanel(
                   headerBuilder: (context, isExpanded) => Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Align(alignment: Alignment.centerLeft,child: Text("Description", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)),
-                  ),
+                        padding: EdgeInsets.only(left: 10),
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Description",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            )),
+                      ),
                   canTapOnHeader: true,
                   isExpanded: _collapse,
                   body: ListTile(
-                    title: Text("\t\t\t"+formatDescription("Dessert is a course that concludes a meal. The course usually consists of sweet foods, such as confections dishes or fruit, and possibly a beverage such as dessert wine or liqueur, however in the United States it may include coffee, cheeses, nuts, or other savory items regarded as a separate course elsewhere. In some parts of the world, such as much of central and western Africa, and most parts of China, there is no tradition of a dessert course to conclude a meal.\r\n\r\nThe term dessert can apply to many confections, such as biscuits, cakes, cookies, custards, gelatins, ice creams, pastries, pies, puddings, and sweet soups, and tarts. Fruit is also commonly found in dessert courses because of its naturally occurring sweetness. Some cultures sweeten foods that are more commonly savory to create desserts.")),
+                    title: Text(
+                        "\t\t\t" + formatDescription(category.description)),
                   ))
             ],
           ),

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jokes/domain/models/food_recipe.dart';
-import 'package:jokes/domain/repository/myrecipes_repository.dart';
-import 'package:jokes/domain/usecases/my_recipe_usecases/add_recipe.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
+import 'package:food_recipe/domain/repository/myrecipes_repository.dart';
+import 'package:food_recipe/domain/usecases/my_recipe_usecases/add_recipe.dart';
 import 'package:mockito/mockito.dart';
 
 class MockMyRecipesRepository extends Mock implements MyRecipesRepository {}

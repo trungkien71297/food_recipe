@@ -1,4 +1,4 @@
-package com.example.jokes
+package com.example.food_recipe
 
 import io.flutter.embedding.android.FlutterActivity
 

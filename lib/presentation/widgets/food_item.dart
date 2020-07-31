@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/models/food_recipe_view.dart';
-import 'package:jokes/presentation/pages/food_detail_page.dart';
+import 'package:food_recipe/presentation/models/food_recipe_view.dart';
+import 'package:food_recipe/presentation/pages/food_detail_page.dart';
 
 class FoodItem extends StatelessWidget {
   final FoodRecipeView foodItem;
@@ -10,7 +10,8 @@ class FoodItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(FoodDetailPage.ROUTE_NAME, arguments: {'item': foodItem, 'isLoaded': false}),
+      onTap: () => Navigator.of(context).pushNamed(FoodDetailPage.ROUTE_NAME,
+          arguments: {'item': foodItem, 'isLoaded': false}),
       child: Container(
         child:
             Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [

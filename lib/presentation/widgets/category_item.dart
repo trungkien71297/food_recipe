@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/models/category_detail_view.dart';
-import 'package:jokes/presentation/pages/category_detail_page.dart';
+import 'package:food_recipe/domain/models/food_category.dart';
+import 'package:food_recipe/presentation/pages/category_detail_page.dart';
 
 class CategoryItem extends StatelessWidget {
-  final CategoryDetailView category;
+  final FoodCategory category;
 
   CategoryItem({Key key, this.category}) : super(key: key);
 
@@ -11,14 +11,15 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(CategoryDetailPage.ROUTE_NAME, arguments: {'category':category});
+        Navigator.of(context).pushNamed(CategoryDetailPage.ROUTE_NAME,
+            arguments: {'category': category});
       },
       child: Card(
           elevation: 3,
           color: Colors.grey.withOpacity(0.3),
           child: Container(
             height: 180,
-            padding: EdgeInsets.only(bottom: 5),
+            padding: EdgeInsets.only(bottom: 5, top: 5),
             child: Column(
               children: [
                 Hero(
@@ -32,7 +33,7 @@ class CategoryItem extends StatelessWidget {
                               ),
                               fit: BoxFit.contain))),
                 ),
-                Text("Vega",
+                Text(category.name,
                     style: TextStyle(fontSize: 20, color: Colors.white70))
               ],
             ),

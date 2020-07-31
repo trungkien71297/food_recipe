@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jokes/domain/models/food_recipe.dart';
-import 'package:jokes/domain/repository/food_repository.dart';
-import 'package:jokes/domain/usecases/usecase.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
+import 'package:food_recipe/domain/repository/food_repository.dart';
+import 'package:food_recipe/domain/usecases/usecase.dart';
 
 class GetRecipeById extends Usecase<FoodRecipe, Params> {
   final FoodRepository repository;

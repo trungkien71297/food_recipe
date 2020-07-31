@@ -1,8 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/models/food_recipe_view.dart';
-import 'package:jokes/presentation/pages/food_detail_page.dart';
+import 'package:food_recipe/presentation/models/food_recipe_view.dart';
+import 'package:food_recipe/presentation/pages/food_detail_page.dart';
 
 class Home extends StatelessWidget {
   final food = FoodRecipeView(

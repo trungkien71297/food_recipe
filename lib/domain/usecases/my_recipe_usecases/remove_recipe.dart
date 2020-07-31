@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
-import 'package:jokes/domain/repository/myrecipes_repository.dart';
-import 'package:jokes/domain/usecases/usecase.dart';
+import 'package:food_recipe/domain/repository/myrecipes_repository.dart';
+import 'package:food_recipe/domain/usecases/usecase.dart';
 
 class RemoveRecipe extends Usecase<bool, Params> {
   final MyRecipesRepository repository;

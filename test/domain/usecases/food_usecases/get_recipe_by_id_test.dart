@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jokes/domain/models/food_recipe.dart';
-import 'package:jokes/domain/repository/food_repository.dart';
-import 'package:jokes/domain/usecases/food_usecases/get_recipe_by_id.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
+import 'package:food_recipe/domain/repository/food_repository.dart';
+import 'package:food_recipe/domain/usecases/food_usecases/get_recipe_by_id.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFoodRepository extends Mock implements FoodRepository {}

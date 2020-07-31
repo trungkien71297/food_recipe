@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:jokes/domain/models/food_recipe.dart';
-import 'package:jokes/domain/repository/food_repository.dart';
-import 'package:jokes/domain/usecases/usecase.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
+import 'package:food_recipe/domain/repository/food_repository.dart';
+import 'package:food_recipe/domain/usecases/usecase.dart';
 
 class GetRecipesByCate extends Usecase<List<FoodRecipe>, Params> {
   final FoodRepository repository;
