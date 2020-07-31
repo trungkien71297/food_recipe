@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jokes/presentation/pages/food_detail.dart';
+import 'package:jokes/presentation/pages/category_detail_page.dart';
+import 'package:jokes/presentation/pages/food_detail_page.dart';
 import 'package:jokes/presentation/pages/main_page.dart';
 
 void main() {
@@ -17,12 +18,16 @@ class JokeApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
-        FoodDetail.ROUTE_NAME: (context) => FoodDetail()
+        FoodDetailPage.ROUTE_NAME: (context) => FoodDetailPage(),
+        CategoryDetailPage.ROUTE_NAME: (context) => CategoryDetailPage()
       },
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case FoodDetail.ROUTE_NAME:
-            return _createRoute(FoodDetail());
+          case FoodDetailPage.ROUTE_NAME:
+            return _createRoute(FoodDetailPage());
+            break;
+          case CategoryDetailPage.ROUTE_NAME:
+            return _createRoute(CategoryDetailPage());
             break;
           default:
             return _createRoute(MainPage());
