@@ -4,7 +4,6 @@ String videoId(String url) {
   return YoutubePlayer.convertUrlToId(url);
 }
 
-String formatDescription(String text){
-  print(text.replaceAll("\r\n",'\t\t\t\r\n'));
-  return text.replaceAll("\r\n",'\r\n\t\t\t');
+String formatDescription(String text) {
+  return text.replaceAll("\r\n", '\r\n\t\t\t');
 }

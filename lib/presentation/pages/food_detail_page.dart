@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
 import 'package:food_recipe/presentation/common.dart';
-import 'package:food_recipe/presentation/models/food_recipe_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class FoodDetailPage extends StatefulWidget {
-  final FoodRecipeView foodRecipe;
+  final FoodRecipe foodRecipe;
   static const ROUTE_NAME = "FoodDetailPage";
 
   FoodDetailPage({Key key, this.foodRecipe}) : super(key: key);
@@ -18,7 +18,7 @@ class FoodDetailPage extends StatefulWidget {
 
 class _FoodDetailPageState extends State<FoodDetailPage> {
   ScrollController _scrollController;
-  FoodRecipeView food;
+  FoodRecipe food;
   YoutubePlayerController _ytController;
 
   bool _collapseInstruc = false;
@@ -56,38 +56,23 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
         initialScrollOffset:
             MediaQuery.of(context).size.height / 3 - kToolbarHeight);
     Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
-    food = arguments['item'];
-
-    ///////////fake data
-    food.youtube = "https://www.youtube.com/watch?v=1IszT_guI08";
-    food.recipe = {
-      "Potatoes": "2",
-      "Red Onions": "1",
-      "Garlic": "2 cloves",
-      "Lime": "1",
-      "Bread": "2",
-      "Pork": "1 lb",
-      "Barbeque Sauce": "",
-      "Hotsauce": "",
-      "Tomato Ketchup": "",
-      "Sugar": "",
-      "Vegetable Oil": "",
-      "Salt": "",
-      "Pepper": "",
-    };
-
+    var foodTmp = arguments['item'];
+    if (arguments['isLoaded']) {
+      food = foodTmp;
+    }
+    if (food.youtube != "") {
+      _ytController = YoutubePlayerController(
+        initialVideoId: videoId(food.youtube), //food.youtube
+        flags: YoutubePlayerFlags(
+          autoPlay: false,
+          mute: true,
+        ),
+      );
+    }
     ////////////////
     if (await canLaunch(food.youtube)) {
       _canLaunch = true;
     }
-    print(food);
-    _ytController = YoutubePlayerController(
-      initialVideoId: videoId(food.youtube), //food.youtube
-      flags: YoutubePlayerFlags(
-        autoPlay: false,
-        mute: true,
-      ),
-    );
     super.didChangeDependencies();
   }
 
@@ -106,7 +91,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                   centerTitle: true,
                   title: Center(
                     child: Text(
-                      "Eccles Cakes",
+                      food.name,
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
@@ -119,7 +104,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                       ),
                     )
                   ],
-                  // title: Text("Eccles Cakes"),
                   flexibleSpace: Stack(
                     children: <Widget>[
                       Positioned.fill(
@@ -175,9 +159,8 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                         canTapOnHeader: true,
                         isExpanded: _collapseInstruc,
                         body: ListTile(
-                          title: Text("\t\t\t" +
-                              formatDescription(
-                                  "Bring a large pot of water to a boil. Add kosher salt to the boiling water, then add the pasta. Cook according to the package instructions, about 9 minutes.\r\nIn a large skillet over medium-high heat, add the olive oil and heat until the oil starts to shimmer. Add the garlic and cook, stirring, until fragrant, 1 to 2 minutes. Add the chopped tomatoes, red chile flakes, Italian seasoning and salt and pepper to taste. Bring to a boil and cook for 5 minutes. Remove from the heat and add the chopped basil.\r\nDrain the pasta and add it to the sauce. Garnish with Parmigiano-Reggiano flakes and more basil and serve warm.")),
+                          title: Text(
+                              "\t\t\t" + formatDescription(food.instructions)),
                         )),
                     ExpansionPanel(
                         headerBuilder: (context, isExpanded) => Padding(
@@ -225,14 +208,10 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                             showVideoProgressIndicator: true,
                             progressColors:
                                 ProgressBarColors(playedColor: Colors.amber),
-                            onReady: () {
-                              print("Ready");
-                            },
                             bottomActions: [
                               CurrentPosition(),
                               ProgressBar(isExpanded: true),
                             ],
-                            onEnded: (metaData) => print(metaData.toString()),
                           ),
                         ))),
                   ],

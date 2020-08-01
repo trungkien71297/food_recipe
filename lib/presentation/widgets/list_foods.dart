@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_recipe/presentation/models/food_recipe_view.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
 import 'package:food_recipe/presentation/widgets/food_item.dart';
 
 class ListFoods extends StatelessWidget {
-  final List<FoodRecipeView> foods = List.generate(
+  final List<FoodRecipe> foods = List.generate(
       14,
-      (index) => FoodRecipeView(
+      (index) => FoodRecipe(
           id: (1234 + index).toString(),
           name: 'Escovitch Fish',
           thumb:

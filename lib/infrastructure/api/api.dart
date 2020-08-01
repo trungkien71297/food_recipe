@@ -6,4 +6,9 @@ class API {
     return await client
         .get("https://www.themealdb.com/api/json/v1/1/categories.php");
   }
+
+  Future<http.Response> getRandomRecipe() async {
+    return await client
+        .get("https://www.themealdb.com/api/json/v1/1/random.php");
+  }
 }

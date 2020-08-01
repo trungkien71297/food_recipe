@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_recipe/presentation/models/food_recipe_view.dart';
+import 'package:food_recipe/domain/models/food_recipe.dart';
 import 'package:food_recipe/presentation/pages/food_detail_page.dart';
 
 class FoodItem extends StatelessWidget {
-  final FoodRecipeView foodItem;
+  final FoodRecipe foodItem;
 
   FoodItem({Key key, this.foodItem}) : super(key: key);
 

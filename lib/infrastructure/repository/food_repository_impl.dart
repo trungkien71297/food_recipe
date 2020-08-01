@@ -6,6 +6,7 @@ import 'package:food_recipe/domain/repository/food_repository.dart';
 import 'package:food_recipe/infrastructure/api/api.dart';
 import 'package:food_recipe/infrastructure/local_data/local.dart';
 import 'package:food_recipe/infrastructure/models/category_infra.dart';
+import 'package:food_recipe/infrastructure/models/food_recipe_infra.dart';
 import 'package:food_recipe/infrastructure/models/mappers.dart';
 
 class FoodRepositoryImpl extends FoodRepository {
@@ -27,9 +28,14 @@ class FoodRepositoryImpl extends FoodRepository {
   }
 
   @override
-  Future<FoodRecipe> getRandomRecipe() {
-    // TODO: implement getRandomRecipe
-    throw UnimplementedError();
+  Future<FoodRecipe> getRandomRecipe() async {
+    var response = await api.getRandomRecipe();
+    var json = jsonDecode(response.body) as Map<String, dynamic>;
+    List<dynamic> lst = json['meals'];
+    if (lst.length > 0)
+      return mappers.foodRecipeToDomain(FoodRecipeInfra.fromJson(lst[0]));
+    else
+      return null;
   }
 
   @override
