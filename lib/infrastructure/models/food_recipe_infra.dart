@@ -2,15 +2,27 @@ import 'package:json_annotation/json_annotation.dart';
 part 'food_recipe_infra.g.dart';
 
 @JsonSerializable()
+class ListFoodInfra {
+  List<FoodRecipeInfra> meals;
+  ListFoodInfra({this.meals});
+  factory ListFoodInfra.fromJson(Map<String, dynamic> json) =>
+      _$ListFoodInfraFromJson(json);
+  Map<String, dynamic> toJson() => _$ListFoodInfraToJson(this);
+}
+
+@JsonSerializable()
 class FoodRecipeInfra {
   String idMeal;
   String strMeal;
+  @JsonKey(nullable: true) 
   String strDrinkAlternate;
   String strCategory;
   String strArea;
   String strInstructions;
   String strMealThumb;
+  @JsonKey(nullable: true) 
   String strTags;
+  @JsonKey(nullable: true) 
   String strYoutube;
   String strIngredient1;
   String strIngredient2;
@@ -58,13 +70,13 @@ class FoodRecipeInfra {
   FoodRecipeInfra(
       {this.idMeal,
       this.strMeal,
-      @JsonKey(nullable: true) this.strDrinkAlternate,
+      this.strDrinkAlternate,
       this.strCategory,
       this.strArea,
       this.strInstructions,
       this.strMealThumb,
-      @JsonKey(nullable: true) this.strTags,
-      @JsonKey(nullable: true) this.strYoutube,
+      this.strTags,
+      this.strYoutube,
       this.strIngredient1,
       this.strIngredient2,
       this.strIngredient3,

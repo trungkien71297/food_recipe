@@ -2,39 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:food_recipe/presentation/pages/category_detail_page.dart';
 import 'package:food_recipe/presentation/pages/food_detail_page.dart';
 import 'package:food_recipe/presentation/pages/main_page.dart';
+import 'package:provider/provider.dart';
+import 'package:food_recipe/presentation/blocs/food_recipe_bloc.dart';
 import 'di/di.dart' as di;
 
-void main() {
-  di.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(JokeApp());
 }
 
 class JokeApp extends StatelessWidget {
+  var bloc = di.getIt<FoodRecipeBloc>();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          primaryColor: Colors.red,
-          backgroundColor: Colors.black,
-          appBarTheme: AppBarTheme(color: Colors.grey.withOpacity(0.5))),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => MainPage(),
-        FoodDetailPage.ROUTE_NAME: (context) => FoodDetailPage(),
-        CategoryDetailPage.ROUTE_NAME: (context) => CategoryDetailPage()
-      },
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case FoodDetailPage.ROUTE_NAME:
-            return _createRoute(FoodDetailPage());
-            break;
-          case CategoryDetailPage.ROUTE_NAME:
-            return _createRoute(CategoryDetailPage());
-            break;
-          default:
-            return _createRoute(MainPage());
-        }
-      },
+    return Provider(
+      create: (context) => bloc,
+      dispose: (context, value) => bloc.dispose(),
+      child: MaterialApp(
+        theme: ThemeData(
+            primaryColor: Colors.red,
+            backgroundColor: Colors.black,
+            appBarTheme: AppBarTheme(color: Colors.grey.withOpacity(0.5))),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => MainPage(),
+          FoodDetailPage.ROUTE_NAME: (context) => FoodDetailPage(),
+          CategoryDetailPage.ROUTE_NAME: (context) => CategoryDetailPage()
+        },
+        // onGenerateRoute: (settings) {
+        //   switch (settings.name) {
+        //     case FoodDetailPage.ROUTE_NAME:
+        //       return _createRoute(FoodDetailPage());
+        //       break;
+        //     case CategoryDetailPage.ROUTE_NAME:
+        //       return _createRoute(CategoryDetailPage());
+        //       break;
+        //     default:
+        //       return _createRoute(MainPage());
+        //   }
+        // },
+      ),
     );
   }
 }

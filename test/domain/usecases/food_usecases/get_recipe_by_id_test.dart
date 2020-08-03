@@ -27,7 +27,7 @@ void main() {
       thumb: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
       youtube: "https://www.youtube.com/watch?v=4aZr5hZXP_s",
       recipe: {'soy sauce': "3/4 cup", "brown sugar": "1/4 cup"});
-  final params = Params(id: '2131');
+  final params = GetRecipeByIdParams(id: '2131');
 
   test('get food recipe by id', () async {
     when(repository.getRecipeById(params.id)).thenAnswer((_) async => food);

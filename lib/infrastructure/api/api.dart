@@ -11,4 +11,14 @@ class API {
     return await client
         .get("https://www.themealdb.com/api/json/v1/1/random.php");
   }
+
+  Future<http.Response> getRecipesByCate(String cate) async {
+    return await client
+        .get("https://www.themealdb.com/api/json/v1/1/filter.php?c=$cate");
+  }
+
+  Future<http.Response> getRecipeById(String id) async {
+    return await client
+        .get("https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id");
+  }
 }

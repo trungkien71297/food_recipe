@@ -6,6 +6,21 @@ part of 'food_recipe_infra.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+ListFoodInfra _$ListFoodInfraFromJson(Map<String, dynamic> json) {
+  return ListFoodInfra(
+    meals: (json['meals'] as List)
+        ?.map((e) => e == null
+            ? null
+            : FoodRecipeInfra.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$ListFoodInfraToJson(ListFoodInfra instance) =>
+    <String, dynamic>{
+      'meals': instance.meals,
+    };
+
 FoodRecipeInfra _$FoodRecipeInfraFromJson(Map<String, dynamic> json) {
   return FoodRecipeInfra(
     idMeal: json['idMeal'] as String,

@@ -4,21 +4,21 @@ import 'package:food_recipe/domain/models/food_recipe.dart';
 import 'package:food_recipe/domain/repository/myrecipes_repository.dart';
 import 'package:food_recipe/domain/usecases/usecase.dart';
 
-class AddRecipe extends Usecase<bool, Params> {
+class AddRecipe extends Usecase<bool, AddRecipeParams> {
   final MyRecipesRepository repository;
 
   AddRecipe({@required this.repository});
 
   @override
-  Future<bool> call(Params params) async {
+  Future<bool> call(AddRecipeParams params) async {
     return await repository.addRecipe(params.recipe);
   }
 }
 
-class Params extends Equatable {
+class AddRecipeParams extends Equatable {
   final FoodRecipe recipe;
 
-  Params({this.recipe});
+  AddRecipeParams({this.recipe});
 
   @override
   List<Object> get props => [this.recipe];

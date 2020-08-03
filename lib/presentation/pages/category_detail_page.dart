@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:food_recipe/domain/models/food_category.dart';
 import 'package:food_recipe/presentation/common.dart';
 import 'package:food_recipe/presentation/widgets/list_foods.dart';
+import 'package:food_recipe/presentation/blocs/food_recipe_bloc.dart';
+import 'package:provider/provider.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   static const ROUTE_NAME = "CategoryDetailPage";
@@ -14,9 +16,14 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   ScrollController _scrollController;
   FoodCategory category;
   bool _collapse = true;
+  FoodRecipeBloc bloc;
+
   @override
   void didChangeDependencies() {
-    var initOffset = MediaQuery.of(context).size.height / 3;
+    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
+    category = args['category'];
+    bloc = Provider.of<FoodRecipeBloc>(context);
+    var initOffset = MediaQuery.of(context).size.height / 3 - kToolbarHeight;
     _scrollController = ScrollController(initialScrollOffset: initOffset);
     _scrollController.addListener(() {
       if (_scrollController.offset > initOffset) {
@@ -32,8 +39,6 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> args = ModalRoute.of(context).settings.arguments;
-    category = args['category'];
     return Scaffold(
       body: NestedScrollView(
         controller: _scrollController,
@@ -52,16 +57,6 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: Icon(
-                    Icons.favorite,
-                    size: 40,
-                  ),
-                )
-              ],
-              // title: Text("Eccles Cakes"),
               flexibleSpace: Stack(
                 children: <Widget>[
                   Positioned.fill(
@@ -105,7 +100,26 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
                   ))
             ],
           ),
-          Expanded(child: ListFoods()),
+          Expanded(
+              child: StreamBuilder(
+                  stream: bloc.listRecipeByCate,
+                  initialData: null,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      bloc.getRecipeByCategory(category.name);
+                    }
+                    if (snapshot.hasData) {
+                      return ListFoods(
+                        foods: snapshot.data,
+                      );
+                    } else
+                      return Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.white,
+                          strokeWidth: 4,
+                        ),
+                      );
+                  })),
         ]),
       ),
     );

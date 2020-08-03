@@ -11,6 +11,7 @@ class FoodRecipe extends Equatable {
   final String tags;
   final String youtube;
   final String source;
+  final bool isSaved;
   final Map<String, String> recipe;
 
   FoodRecipe(
@@ -23,6 +24,7 @@ class FoodRecipe extends Equatable {
       this.tags,
       this.youtube,
       this.source,
+      this.isSaved,
       this.recipe});
   @override
   List<Object> get props => [
@@ -35,6 +37,7 @@ class FoodRecipe extends Equatable {
         this.tags,
         this.youtube,
         this.source,
+        this.isSaved,
         this.recipe
       ];
 }

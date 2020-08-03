@@ -6,6 +6,22 @@ part of 'category_infra.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+CategoriesListInfra _$CategoriesListInfraFromJson(Map<String, dynamic> json) {
+  return CategoriesListInfra(
+    categories: (json['categories'] as List)
+        ?.map((e) => e == null
+            ? null
+            : CategoryInfra.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$CategoriesListInfraToJson(
+        CategoriesListInfra instance) =>
+    <String, dynamic>{
+      'categories': instance.categories,
+    };
+
 CategoryInfra _$CategoryInfraFromJson(Map<String, dynamic> json) {
   return CategoryInfra(
     idCategory: json['idCategory'] as String,

@@ -41,8 +41,8 @@ main() {
   test('add recipe', () async {
     when(repository.addRecipe(food)).thenAnswer((_) async => true);
     when(repository.addRecipe(food2)).thenAnswer((_) async => false);
-    final result = await usecase(Params(recipe: food));
-    final result2 = await usecase(Params(recipe: food2));
+    final result = await usecase(AddRecipeParams(recipe: food));
+    final result2 = await usecase(AddRecipeParams(recipe: food2));
     expect(result, true);
     expect(result2, false);
     verify(repository.addRecipe(food));

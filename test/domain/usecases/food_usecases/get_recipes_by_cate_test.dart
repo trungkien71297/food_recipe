@@ -77,7 +77,7 @@ main() {
         youtube: "https://www.youtube.com/watch?v=4aZr5hZXP_s",
         recipe: {'soy sauce': "3/4 cup", "brown sugar": "1/4 cup"})
   ];
-  final params = Params(cate: 'SeaFood');
+  final params = GetRecipesByCateParams(cate: 'SeaFood');
 
   test('get list recipes by cate', () async {
     when(repository.getRecipesByCate(params.cate))
