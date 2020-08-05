@@ -21,8 +21,8 @@ main() {
     when(repository.removeRecipe(id1)).thenAnswer((_) async => true);
     when(repository.removeRecipe(id2)).thenAnswer((_) async => false);
 
-    final result1 = await usecase(Params(id: id1));
-    final result2 = await usecase(Params(id: id2));
+    final result1 = await usecase(RemoveRecipeParams(id: id1));
+    final result2 = await usecase(RemoveRecipeParams(id: id2));
 
     expect(result1, true);
     expect(result2, false);

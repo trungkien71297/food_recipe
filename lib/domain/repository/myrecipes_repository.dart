@@ -4,4 +4,5 @@ abstract class MyRecipesRepository {
   Future<List<FoodRecipe>> getMyFavoriteRecipes();
   Future<bool> removeRecipe(String id);
   Future<bool> addRecipe(FoodRecipe recipe);
+  Future<FoodRecipe> getRecipe(String id);
 }

@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'food_recipe_infra.g.dart';
 
@@ -10,18 +11,28 @@ class ListFoodInfra {
   Map<String, dynamic> toJson() => _$ListFoodInfraToJson(this);
 }
 
+
 @JsonSerializable()
+@HiveType(typeId: 1)
 class FoodRecipeInfra {
+  @HiveField(0)
   String idMeal;
+  @HiveField(1)
   String strMeal;
   @JsonKey(nullable: true) 
   String strDrinkAlternate;
+  @HiveField(2)
   String strCategory;
+  @HiveField(3)
   String strArea;
+  @HiveField(4)
   String strInstructions;
+  @HiveField(5)
   String strMealThumb;
+  @HiveField(6)
   @JsonKey(nullable: true) 
   String strTags;
+  @HiveField(7)  
   @JsonKey(nullable: true) 
   String strYoutube;
   String strIngredient1;
@@ -64,7 +75,12 @@ class FoodRecipeInfra {
   String strMeasure18;
   String strMeasure19;
   String strMeasure20;
+  @HiveField(9)
+  @JsonKey(ignore: true)
+  Map<String, String> recipeInMap;
+  @HiveField(8)
   String strSource;
+  @JsonKey(nullable: true)
   String dateModified;
 
   FoodRecipeInfra(
@@ -118,7 +134,8 @@ class FoodRecipeInfra {
       this.strMeasure19,
       this.strMeasure20,
       this.strSource,
-      @JsonKey(nullable: true) this.dateModified});
+      this.recipeInMap,
+      this.dateModified});
   factory FoodRecipeInfra.fromJson(Map<String, dynamic> json) =>
       _$FoodRecipeInfraFromJson(json);
   Map<String, dynamic> toJson() => _$FoodRecipeInfraToJson(this);

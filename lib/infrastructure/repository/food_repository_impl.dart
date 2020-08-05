@@ -19,7 +19,10 @@ class FoodRepositoryImpl extends FoodRepository {
   Future<List<FoodCategory>> getCategories() async {
     var response = await api.getCategories();
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return CategoriesListInfra.fromJson(json).categories.map((e) => mappers.categoryToDomain(e)).toList();
+    return CategoriesListInfra.fromJson(json)
+        .categories
+        .map((e) => mappers.categoryToDomain(e))
+        .toList();
   }
 
   @override
@@ -27,21 +30,30 @@ class FoodRepositoryImpl extends FoodRepository {
     var response = await api.getRandomRecipe();
     var json = jsonDecode(response.body) as Map<String, dynamic>;
     ListFoodInfra list = ListFoodInfra.fromJson(json);
-    if (list.meals.length > 0)
-      return mappers.foodRecipeToDomain(list.meals[0]);
-    else
+    if (list.meals.length > 0) {
+      var foodApi = mappers.foodRecipeToDomain(list.meals[0], false);
+      var foodLocal = await localRepository.getRecipe(foodApi.id);
+      if (foodLocal != null)
+        return foodLocal;
+      else
+        return foodApi;
+    } else
       return null;
   }
 
   @override
   Future<FoodRecipe> getRecipeById(String id) async {
-    var response = await api.getRecipeById(id);
-    var json = jsonDecode(response.body) as Map<String, dynamic>;
-    ListFoodInfra list = ListFoodInfra.fromJson(json);
-    if (list.meals.length > 0)
-      return mappers.foodRecipeToDomain(list.meals[0]);
-    else
-      return null;
+    var foodLocal = await localRepository.getRecipe(id);
+    if (foodLocal == null) {
+      var response = await api.getRecipeById(id);
+      var json = jsonDecode(response.body) as Map<String, dynamic>;
+      ListFoodInfra list = ListFoodInfra.fromJson(json);
+      if (list.meals.length > 0) {
+        return mappers.foodRecipeToDomain(list.meals[0], false);
+      } else
+        return null;
+    } else
+      return foodLocal;
   }
 
   @override
@@ -50,7 +62,9 @@ class FoodRepositoryImpl extends FoodRepository {
     var json = jsonDecode(response.body) as Map<String, dynamic>;
     ListFoodInfra list = ListFoodInfra.fromJson(json);
     if (list.meals.length > 0)
-      return list.meals.map((e) => mappers.foodRecipeToDomain(e)).toList();
+      return list.meals
+          .map((e) => mappers.foodRecipeToDomain(e, false))
+          .toList();
     else
       return [];
   }

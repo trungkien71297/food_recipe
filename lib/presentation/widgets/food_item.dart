@@ -25,6 +25,7 @@ class FoodItem extends StatelessWidget {
           ),
           Text(
             foodItem.name,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 20, color: Colors.black),
           )
         ]),

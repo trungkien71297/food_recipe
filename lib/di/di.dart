@@ -1,6 +1,7 @@
 import 'package:food_recipe/domain/repository/myrecipes_repository.dart';
 import 'package:food_recipe/domain/usecases/my_recipe_usecases/add_recipe.dart';
 import 'package:food_recipe/domain/usecases/my_recipe_usecases/get_my_favorite_recipes.dart';
+import 'package:food_recipe/domain/usecases/my_recipe_usecases/remove_recipe.dart';
 import 'package:food_recipe/infrastructure/models/mappers.dart';
 import 'package:food_recipe/infrastructure/repository/myrecipes_repository_impl.dart';
 import 'package:get_it/get_it.dart';
@@ -24,7 +25,8 @@ init() async {
       getRecipeById: getIt(),
       getRecipesByCate: getIt(),
       addRecipe: getIt(), 
-      getMyFavoriterecipes: getIt()));
+      getMyFavoriterecipes: getIt(),
+      removeRecipe: getIt()));
   ////usescases
   getIt.registerLazySingleton(() => GetCategories(repository: getIt()));
   getIt.registerLazySingleton(() => GetRandomRecipe(repository: getIt()));
@@ -32,11 +34,12 @@ init() async {
   getIt.registerLazySingleton(() => GetRecipesByCate(repository: getIt()));
   getIt.registerLazySingleton(() => AddRecipe(repository: getIt()));
   getIt.registerLazySingleton(() => GetMyFavoriterecipes(repository: getIt()));
+  getIt.registerLazySingleton(() => RemoveRecipe(repository: getIt()));
 
   ///repository
   getIt.registerLazySingleton<FoodRepository>(() => FoodRepositoryImpl(
       api: getIt(), localRepository: getIt(), mappers: getIt()));
-  getIt.registerLazySingleton<MyRecipesRepository>(() => MyRecipesRepositoryImpl(local: getIt()));
+  getIt.registerLazySingleton<MyRecipesRepository>(() => MyRecipesRepositoryImpl(local: getIt(), mappers: getIt()));
   ////
   getIt.registerLazySingleton(() => API());
   getIt.registerLazySingleton(
