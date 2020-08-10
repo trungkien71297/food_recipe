@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:food_recipe/presentation/widgets/main_pages/account.dart';
 import 'package:food_recipe/presentation/widgets/main_pages/categories.dart';
 import 'package:food_recipe/presentation/widgets/main_pages/home.dart';
-import 'package:food_recipe/presentation/widgets/main_pages/setting.dart';
 import 'package:food_recipe/presentation/blocs/food_recipe_bloc.dart';
 import 'package:provider/provider.dart';
 
@@ -19,14 +18,11 @@ class _MainPageState extends State<MainPage> {
         icon: Icon(Icons.category), title: Text("Category")),
     BottomNavigationBarItem(
         icon: Icon(Icons.account_box), title: Text("Account")),
-    BottomNavigationBarItem(
-        icon: Icon(
-          Icons.settings,
-        ),
-        title: Text("Setting"))
+    
   ];
   FoodRecipeBloc bloc;
-  List<Widget> _pages = [Home(), Categories(), Account(), Settings()];
+  List<Widget> _pages = [Home(), Categories(), Account()
+  ];
   PageController _controller = PageController();
   int _index;
 
@@ -59,6 +55,7 @@ class _MainPageState extends State<MainPage> {
         title: Text("Food recipe"),
       ),
       body: PageView.builder(
+        physics: NeverScrollableScrollPhysics(),
         controller: _controller,
         itemCount: _pages.length,
         itemBuilder: (context, index) => _pages[index],

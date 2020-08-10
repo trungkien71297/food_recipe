@@ -6,6 +6,7 @@ import 'package:food_recipe/presentation/blocs/food_recipe_bloc.dart';
 import 'package:food_recipe/presentation/common.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class FoodDetailPage extends StatefulWidget {
@@ -21,11 +22,10 @@ class FoodDetailPage extends StatefulWidget {
 class _FoodDetailPageState extends State<FoodDetailPage> {
   ScrollController _scrollController;
   FoodRecipe foodTmp;
-  YoutubePlayerController _ytController;
   FoodRecipeBloc bloc;
   bool _collapseInstruc = false;
   bool _collapseYoutube = false;
-  bool _loaded = false;
+  // bool _loaded = false;
   bool _isSaved = false;
   ValueNotifier<bool> saved = ValueNotifier(false);
 
@@ -56,8 +56,8 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
             MediaQuery.of(context).size.height / 3 - kToolbarHeight);
     Map<String, Object> arguments = ModalRoute.of(context).settings.arguments;
     foodTmp = arguments['item'];
-    _loaded = arguments['isLoaded'];
-    bloc.getRecipeById(foodTmp, _loaded);
+    // _loaded = arguments['isLoaded'];
+    bloc.getRecipeById(foodTmp, false);
     super.didChangeDependencies();
   }
 
@@ -69,20 +69,24 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
             stream: bloc.foodById,
             builder: (context, snapshot) {
               FoodRecipe food;
+              YoutubePlayerController controller;
               if (snapshot.hasData) {
                 food = snapshot.data as FoodRecipe;
                 foodTmp = food;
-                if (food.youtube != "") {
-                  _ytController = YoutubePlayerController(
-                    initialVideoId: videoId(food.youtube), //food.youtube
-                    flags: YoutubePlayerFlags(
-                      autoPlay: false,
-                      mute: true,
-                    ),
-                  );
-                }
                 _isSaved = food.isSaved;
                 saved.value = _isSaved;
+                if (food.youtube != "") {
+                  controller = YoutubePlayerController(
+                      initialVideoId: videoId(food.youtube),
+                      flags: YoutubePlayerFlags(
+                        autoPlay: false,
+                        mute: false,
+                      ));
+                  controller.addListener(() {
+                    print("Mo no");
+                    print(controller.metadata);
+                  });
+                }
               }
 
               return NestedScrollView(
@@ -128,7 +132,9 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                                 child: ValueListenableBuilder(
                                   valueListenable: saved,
                                   builder: (context, value, child) {
-                                    return value?Icon(Icons.favorite):Icon(Icons.favorite_border);
+                                    return value
+                                        ? Icon(Icons.favorite)
+                                        : Icon(Icons.favorite_border);
                                   },
                                 )),
                           ),
@@ -164,9 +170,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                                     setState(() {
                                       _collapseYoutube = !isExpanded;
                                     });
-                                    if (_collapseYoutube) {
-                                      _ytController.pause();
-                                    }
                                     break;
                                   default:
                                 }
@@ -194,62 +197,71 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                                       title: Text("\t\t\t" +
                                           formatDescription(food.instructions)),
                                     )),
-                                ExpansionPanel(
-                                    headerBuilder: (context, isExpanded) =>
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 10),
-                                          child: Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Video",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  PopupMenuButton(
-                                                    onSelected: (value) {
-                                                      if (value ==
-                                                          'open_with') {
-                                                        launch(food.youtube);
-                                                      }
-                                                    },
-                                                    itemBuilder: (context) {
-                                                      return [
-                                                        PopupMenuItem(
-                                                            value: "open_with",
-                                                            child: Text(
-                                                                'Open with youtube'))
-                                                      ];
-                                                    },
-                                                    child:
-                                                        Icon(Icons.more_vert),
-                                                  )
-                                                ],
-                                              )),
-                                        ),
-                                    canTapOnHeader: true,
-                                    isExpanded: _collapseYoutube,
-                                    body: ListTile(
-                                        title: Card(
-                                      elevation: 5,
-                                      margin: EdgeInsets.all(10),
-                                      child: YoutubePlayer(
-                                        controller: _ytController,
-                                        showVideoProgressIndicator: true,
-                                        progressColors: ProgressBarColors(
-                                            playedColor: Colors.amber),
-                                        bottomActions: [
-                                          CurrentPosition(),
-                                          ProgressBar(isExpanded: true),
-                                        ],
-                                      ),
-                                    ))),
+                                if (food.youtube != "")
+                                  ExpansionPanel(
+                                      headerBuilder: (context, isExpanded) =>
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Video",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    PopupMenuButton(
+                                                      onSelected:
+                                                          (value) async {
+                                                        if (value ==
+                                                            'open_with') {
+                                                          await launch(
+                                                              food.youtube);
+                                                        }
+                                                      },
+                                                      itemBuilder: (context) {
+                                                        return [
+                                                          PopupMenuItem(
+                                                              value:
+                                                                  "open_with",
+                                                              child: Text(
+                                                                  'Open with youtube'))
+                                                        ];
+                                                      },
+                                                      child:
+                                                          Icon(Icons.more_vert),
+                                                    )
+                                                  ],
+                                                )),
+                                          ),
+                                      canTapOnHeader: true,
+                                      isExpanded: _collapseYoutube,
+                                      body: ListTile(
+                                          title: Card(
+                                        elevation: 5,
+                                        margin: EdgeInsets.all(10),
+                                        child: WebView(
+                                          initialUrl: Uri.dataFromString(videoIframe(food.youtube),  mimeType: 'text/html').toString(),
+                                          javascriptMode: JavascriptMode.unrestricted,
+                                        )
+                                        // YoutubePlayer(
+                                        //   controller: controller,
+                                        //   onReady: () => controller.play(),
+                                        //   showVideoProgressIndicator: true,
+                                        //   progressColors: ProgressBarColors(
+                                        //       playedColor: Colors.amber),
+                                        //   // bottomActions: [
+                                        //   //   CurrentPosition(),
+                                        //   //   ProgressBar(isExpanded: true),
+                                        //   // ],
+                                        // ),
+                                      ))),
                               ],
                             ),
                             ..._ingredients(food)
@@ -267,7 +279,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _ytController.dispose();
     super.dispose();
   }
 }

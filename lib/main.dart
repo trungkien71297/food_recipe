@@ -13,7 +13,7 @@ void main() async {
 }
 
 class JokeApp extends StatelessWidget {
-  var bloc = di.getIt<FoodRecipeBloc>();
+  final bloc = di.getIt<FoodRecipeBloc>();
   @override
   Widget build(BuildContext context) {
     return Provider(
