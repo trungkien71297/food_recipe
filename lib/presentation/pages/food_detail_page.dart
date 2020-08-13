@@ -19,7 +19,7 @@ class FoodDetailPage extends StatefulWidget {
   _FoodDetailPageState createState() => _FoodDetailPageState();
 }
 
-class _FoodDetailPageState extends State<FoodDetailPage> {
+class _FoodDetailPageState extends State<FoodDetailPage> with AutomaticKeepAliveClientMixin{
   ScrollController _scrollController;
   FoodRecipe foodTmp;
   FoodRecipeBloc bloc;
@@ -63,6 +63,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         body: StreamBuilder(
             initialData: bloc.foodDetail,
@@ -242,26 +243,19 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                                           ),
                                       canTapOnHeader: true,
                                       isExpanded: _collapseYoutube,
-                                      body: ListTile(
-                                          title: Card(
-                                        elevation: 5,
-                                        margin: EdgeInsets.all(10),
-                                        child: WebView(
-                                          initialUrl: Uri.dataFromString(videoIframe(food.youtube),  mimeType: 'text/html').toString(),
-                                          javascriptMode: JavascriptMode.unrestricted,
-                                        )
-                                        // YoutubePlayer(
-                                        //   controller: controller,
-                                        //   onReady: () => controller.play(),
-                                        //   showVideoProgressIndicator: true,
-                                        //   progressColors: ProgressBarColors(
-                                        //       playedColor: Colors.amber),
-                                        //   // bottomActions: [
-                                        //   //   CurrentPosition(),
-                                        //   //   ProgressBar(isExpanded: true),
-                                        //   // ],
-                                        // ),
-                                      ))),
+                                      body: Container(
+                                        height: 300,
+                                        child: Center(
+                                          child: WebView(
+                                            initialUrl: Uri.dataFromString(
+                                                    videoIframe(food.youtube, MediaQuery.of(context).size),
+                                                    mimeType: 'text/html')
+                                                .toString(),
+                                            javascriptMode:
+                                                JavascriptMode.unrestricted,
+                                          ),
+                                        ),
+                                      )),
                               ],
                             ),
                             ..._ingredients(food)
@@ -281,4 +275,8 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
     _scrollController.dispose();
     super.dispose();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

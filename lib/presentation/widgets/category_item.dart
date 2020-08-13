@@ -18,7 +18,7 @@ class CategoryItem extends StatelessWidget {
           elevation: 3,
           color: Colors.grey.withOpacity(0.3),
           child: Container(
-            height: 180,
+            height: 200,
             padding: EdgeInsets.only(bottom: 5, top: 5),
             child: Column(
               children: [
